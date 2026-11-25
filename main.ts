@@ -26,7 +26,10 @@ import { join } from 'node:path';
 
 const WORD = 'crashing';
 
-const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const envOut = process.env.MAKEFUN_OUTPUT_DIR?.trim();
+// Fall back to /output when the override is unset OR empty — an empty
+// env var would otherwise make join() write entry.txt into the cwd.
+const out = envOut ? envOut : '/output';
 
 // Self-check the gate before writing, so a bad edit can never ship a
 // rejected entry: UTF-8 text, 1–99 characters, not whitespace-only,
